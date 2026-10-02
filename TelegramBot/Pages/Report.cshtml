@@ -1,0 +1,149 @@
+@page "/report/{token}"
+@model TelegramBot.Pages.ReportModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Finance Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1, h2 {
+            margin-top: 30px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #f3f3f3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Finance Report</h1>
+
+<div class="summary">
+    <div class="card">
+        <strong>Month total</strong>
+        <div>@Model.Report!.MonthTotal.ToString("0.##") @Model.Report.Currency</div>
+    </div>
+
+    <div class="card">
+        <strong>Spending count</strong>
+        <div>@Model.Report.MonthCount</div>
+    </div>
+
+    <div class="card">
+        <strong>Last 7 days</strong>
+        <div>@Model.Report.Last7Total.ToString("0.##") @Model.Report.Currency</div>
+    </div>
+
+    <div class="card">
+        <strong>Previous 7 days</strong>
+        <div>@Model.Report.Previous7Total.ToString("0.##") @Model.Report.Currency</div>
+    </div>
+
+    <div class="card">
+        <strong>Typical day</strong>
+        <div>@Model.Report.TypicalDay.ToString("0.##") @Model.Report.Currency</div>
+    </div>
+</div>
+
+<h2>Category breakdown</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Category</th>
+        <th>Total</th>
+        <th>Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var category in Model.Report.Categories)
+    {
+        <tr>
+            <td>@category.Category</td>
+            <td>@category.Total.ToString("0.##") @Model.Report.Currency</td>
+            <td>@category.Count</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<h2>Last 14 days</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var day in Model.Report.Daily)
+    {
+        <tr>
+            <td>@day.Date.ToString("yyyy-MM-dd")</td>
+            <td>@day.Total.ToString("0.##") @Model.Report.Currency</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<h2>Last 20 spendings</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Note</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var spending in Model.Report.RecentSpendings)
+    {
+        <tr>
+            <td>@spending.SpentAt.ToString("yyyy-MM-dd HH:mm")</td>
+            <td>@spending.Amount.ToString("0.##") @Model.Report.Currency</td>
+            <td>@spending.Category</td>
+            <td>@spending.Note</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+</body>
+</html>
