@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
-using Telegram.Bot.Types;
+//using Telegram.Bot.Types;
 using TelegramBot.Data;
 using TelegramBot.Models;
 using TelegramBot.Parsing;
